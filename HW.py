@@ -78,13 +78,15 @@ student_2.current_courses.append('Python')
 student_2.current_courses.append('GIT')
 
 lecturer_1 = Lecturer('John', 'Lybovski')
-lecturer_1.courses_attached += ['Python', 'GIT']
+lecturer_1.courses_attached += ['Python']
+lecturer_1.courses_attached.append('GIT')
 
 lecturer_2 = Lecturer('Salma', 'Fidger')
-lecturer_2.courses_attached += ['Python', 'GIT']
+lecturer_2.courses_attached += ['Python']
+lecturer_2.courses_attached.append('GIT')
 
 reviewer_1 = Reviewer('Micheal', 'Sandler')
-reviewer_1.courses_attached += ['GIT']
+reviewer_1.courses_attached += ['Python']
 reviewer_2 = Reviewer('Serge', 'Jermiy')
 reviewer_2.courses_attached += ['GIT']
 
@@ -92,31 +94,73 @@ student_1.rate_lec(lecturer_1, 'Python', 10)
 student_1.rate_lec(lecturer_1, 'Python', 8)
 student_2.rate_lec(lecturer_1, 'Python', 9)
 student_2.rate_lec(lecturer_1, 'Python', 10)
+student_1.rate_lec(lecturer_1, 'GIT', 7)
+student_1.rate_lec(lecturer_1, 'GIT', 8)
+student_2.rate_lec(lecturer_1, 'GIT', 10)
+student_2.rate_lec(lecturer_1, 'GIT', 8)
 
 student_1.rate_lec(lecturer_2, 'GIT', 7)
 student_1.rate_lec(lecturer_2, 'GIT', 10)
 student_2.rate_lec(lecturer_2, 'GIT', 9)
 student_2.rate_lec(lecturer_2, 'GIT', 9)
+student_1.rate_lec(lecturer_2, 'Python', 10)
+student_1.rate_lec(lecturer_2, 'Python', 7)
+student_2.rate_lec(lecturer_2, 'Python', 7)
+student_2.rate_lec(lecturer_2, 'Python', 5)
 
+reviewer_1.rate_hw(student_1, 'Python', 7)
+reviewer_1.rate_hw(student_1, 'Python', 10)
 reviewer_1.rate_hw(student_1, 'Python', 10)
 reviewer_1.rate_hw(student_1, 'Python', 10)
 reviewer_1.rate_hw(student_2, 'Python', 9)
 reviewer_1.rate_hw(student_2, 'Python', 8)
+reviewer_1.rate_hw(student_2, 'Python', 10)
+reviewer_1.rate_hw(student_2, 'Python', 9)
 
 reviewer_2.rate_hw(student_1, 'GIT', 9)
 reviewer_2.rate_hw(student_1, 'GIT', 10)
+reviewer_2.rate_hw(student_1, 'GIT', 8)
+reviewer_2.rate_hw(student_1, 'GIT', 10)
+reviewer_2.rate_hw(student_2, 'GIT', 10)
+reviewer_2.rate_hw(student_2, 'GIT', 8)
 reviewer_2.rate_hw(student_2, 'GIT', 10)
 reviewer_2.rate_hw(student_2, 'GIT', 7)
 
 
-print(student_1)
-print(student_2)
-print(lecturer_1)
-print(lecturer_2)
-print(reviewer_1)
-print(reviewer_2)
+print(f'Студенты:\n{student_1}\n{student_2}')
+print(f'Лекторы:\n{lecturer_1}\n{lecturer_2}')
+print(f'Проверяющие:\n{reviewer_1}\n{reviewer_2}')
 
 print(student_1.__lt__(student_2))
 print(lecturer_1 > lecturer_2)
 
-# к сожалению, не смогла разобраться, как написать функции для подсчета средней оценки по курсу среди студентов и преподавателей
+student_list = [student_1, student_2]
+
+def av_grade_st(list, course):
+    sum_grade = 0
+    length = 0
+    for stud in list:
+        if course in stud.grades.keys():
+            sum_grade += sum(stud.grades[course])
+            length += len(stud.grades[course])
+        else:
+            return 'No such course in progress'
+    return f'Средний бал за курс {course}: {round(sum_grade / length, 2)}'
+
+print(av_grade_st(student_list, 'Python'))
+print(av_grade_st(student_list, 'GIT'))
+
+lecturer_list = [lecturer_1, lecturer_2]
+def av_grade_lec(list, course):
+    sum_grade = 0
+    length_grade = 0
+    for lec in list:
+        if course in lec.grades.keys():
+            sum_grade += sum(lec.grades[course])
+            length_grade += len(lec.grades[course])
+        else:
+            return 'Such course was not taught'
+    return f'Средний бал за лекцию {course}: {round(sum_grade / length_grade, 2)}'
+
+print(av_grade_lec(lecturer_list, 'Python'))
+print(av_grade_lec(lecturer_list, 'GIT'))
